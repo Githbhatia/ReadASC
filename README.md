@@ -2,6 +2,7 @@
 
 Read and plot ASC seismic ground motion records such as those obtained in the Turkey Earthquake.
 Python code reads a set of 3 files one each for the NS, EW and Up or Z (vertical Component).
+User interface uses tkinter.
 
 Shows location of seismic instrument that originated the record on a map.
 Plots acceleration, integrated velocity and displacement time history for each component.
@@ -15,3 +16,8 @@ Save time vs. acceleration in a text format.
 
 
 Needs many Python packages:
+numpy
+matplotlib
+itertools
+tkinter
+scipy
