@@ -14,7 +14,7 @@ Plot resultant spectra in a Tripartite format.
 Compare to ASCE 7-22 design spectra using any coordinates in the US - default is Downtown Los Angeles.
 Save time vs. acceleration in a text format.
 
-Example input files included. If desire is to read directly from the zip file containing all 3 components, use the fork ReadASCZip.
+Example input files included. If desire is to read directly from the zip file containing all 3 components, use the branch ReadASCZip.
 
 Needs many Python packages:
 numpy
