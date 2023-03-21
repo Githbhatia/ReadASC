@@ -1199,7 +1199,7 @@ else:
     canvas.entry_Damping.insert(0,str(0.05))
     canvas.entry_Damping.grid(row=rr,column=1,sticky="ew"); rr+=1
 
-    canvas.LabelendPeriod = Label(canvas, text="End Period for Response Spectra (secs) = ", justify="left").grid(row=rr,column=0,sticky="w")
+    canvas.LabelendPeriod = Label(canvas, text="End Period for Response Spectra (secs) = ", justify="right").grid(row=rr,column=0,sticky="w")
     canvas.entry_endPeriod  = Entry(canvas)
     canvas.entry_endPeriod.insert(0,str(6.0))
     canvas.entry_endPeriod.grid(row=rr,column=1,pady =7, sticky="ew"); rr+=1
