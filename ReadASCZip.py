@@ -402,7 +402,7 @@ def rotatedplots(plt, ax, T1, resAccelmax, noSubplotsRows,noSubplotsCols, subplo
             ax.plot(asceSpect["response"]["data"]["multiPeriodMCErSpectrum"]["periods"],\
                 asceSpect["response"]["data"]["multiPeriodMCErSpectrum"]["ordinates"],color= 'blue', linestyle="--",linewidth=0.5,label="MCE Multiperiod Spectrum")
             ax.plot(asceSpect["response"]["data"]["twoPeriodMCErSpectrum"]["periods"],\
-                asceSpect["response"]["data"]["twoPeriodMCErSpectrum"]["ordinates"],color= 'green',linestyle="--", linewidth=0.5,label="MCE2 2-period Spectrum")
+                asceSpect["response"]["data"]["twoPeriodMCErSpectrum"]["ordinates"],color= 'green',linestyle="--", linewidth=0.5,label="MCE 2-period Spectrum")
             ax.set_xlim(0,float(canvas.entry_endPeriod.get()))
         plt.legend(loc="center right",fontsize = 'x-small')
         ax.text(0.97, 0.97, 'Damping=' + str(round(xi,3)), horizontalalignment='right', verticalalignment='top', fontsize=6, color ='Black',transform=ax.transAxes)
@@ -429,7 +429,7 @@ def rotatedplots(plt, ax, T1, resAccelmax, noSubplotsRows,noSubplotsCols, subplo
             ax.plot(mPS[0,:],mPS[1,:], color='blue', linewidth =0.5,label="ASCE7-22 Multiperiod Spectrum")
             ax.plot(tPS[0,:],tPS[1,:], color='green', linewidth =0.5,label="ASCE7-22 2-period Spectrum")
             ax.plot(MmPS[0,:],MmPS[1,:], color='blue',linestyle="--", linewidth =0.5,label="MCE Multiperiod Spectrum")
-            ax.plot(MtPS[0,:],MtPS[1,:], color='green',linestyle="--", linewidth =0.5,label="MCE2 2-period Spectrum")
+            ax.plot(MtPS[0,:],MtPS[1,:], color='green',linestyle="--", linewidth =0.5,label="MCE 2-period Spectrum")
             #plt.legend(loc="center right",fontsize = 'xx-small')
         x_left, x_right = ax.get_xlim()
         y_low, y_high = ax.get_ylim()
@@ -464,7 +464,7 @@ def rotatedplots(plt, ax, T1, resAccelmax, noSubplotsRows,noSubplotsCols, subplo
             ax.plot(tasce,aasce,color= 'blue', linestyle="--",linewidth=1.0,label="MCE Multiperiod Spectrum")
             tasce =np.delete(np.array(asceSpect["response"]["data"]["twoPeriodMCErSpectrum"]["periods"]),0)
             aasce = (1/scaleValue(unitsAccel1)) *np.delete(np.array(asceSpect["response"]["data"]["twoPeriodMCErSpectrum"]["ordinates"]),0)/(2*np.pi/tasce)
-            ax.plot(tasce,aasce,color= 'green', linestyle="--",linewidth=1.0,label="MCE2 2-period Spectrum")
+            ax.plot(tasce,aasce,color= 'green', linestyle="--",linewidth=1.0,label="MCE 2-period Spectrum")
 
         
         plt.xscale("log")
@@ -477,7 +477,6 @@ def rotatedplots(plt, ax, T1, resAccelmax, noSubplotsRows,noSubplotsCols, subplo
     plt.subplots_adjust(left=0.1, right=0.95, top=0.95, bottom=0.05)  
     pb.stop()  
     plt.show()
-
 
 def on_clickRot():
     #%% Parameters of the response spectra
@@ -618,7 +617,7 @@ def on_clickRotD50():
             ax.plot(asceSpect["response"]["data"]["multiPeriodMCErSpectrum"]["periods"],\
                 asceSpect["response"]["data"]["multiPeriodMCErSpectrum"]["ordinates"],color= 'blue', linestyle="--",linewidth=0.5,label="MCE Multiperiod Spectrum")
             ax.plot(asceSpect["response"]["data"]["twoPeriodMCErSpectrum"]["periods"],\
-                asceSpect["response"]["data"]["twoPeriodMCErSpectrum"]["ordinates"],color= 'green',linestyle="--", linewidth=0.5,label="MCE2 2-period Spectrum")
+                asceSpect["response"]["data"]["twoPeriodMCErSpectrum"]["ordinates"],color= 'green',linestyle="--", linewidth=0.5,label="MCE 2-period Spectrum")
             ax.set_xlim(0,float(canvas.entry_endPeriod.get()))
         plt.legend(loc="center right",fontsize = 'x-small')
         ax.text(0.97, 0.97, 'Damping=' + str(round(xi,3)), horizontalalignment='right', verticalalignment='top', fontsize=6, color ='Black',transform=ax.transAxes)
@@ -645,7 +644,7 @@ def on_clickRotD50():
                 ax.plot(tasce,aasce,color= 'blue', linestyle="--",linewidth=1.0,label="MCE Multiperiod Spectrum")
                 tasce =np.delete(np.array(asceSpect["response"]["data"]["twoPeriodMCErSpectrum"]["periods"]),0)
                 aasce = (1/scaleValue(unitsAccel1)) *np.delete(np.array(asceSpect["response"]["data"]["twoPeriodMCErSpectrum"]["ordinates"]),0)/(2*np.pi/tasce)
-                ax.plot(tasce,aasce,color= 'green', linestyle="--",linewidth=1.0,label="MCE2 2-period Spectrum")
+                ax.plot(tasce,aasce,color= 'green', linestyle="--",linewidth=1.0,label="MCE 2-period Spectrum")
 
         
             plt.xscale("log")
@@ -656,8 +655,26 @@ def on_clickRotD50():
             ax.set_xlim(x_left,x_right)
         pb.stop()
         plt.subplots_adjust(left=0.1, right=0.95, top=0.95, bottom=0.05)    
+        
+        if str(canvas.createAz3D.get()) =="1":
+            plt.figure(7)
+            surf = np.zeros((3, 180*len(tT)))
+            k=0
+            for i in range(0,180,1):
+                for j in range(0, len(tT)):
+                    surf[2,k] = rotmax[i,j]
+                    surf[0,k] = i
+                    surf[1,k] = tT[j] 
+                    k+=1
+            zmax = np.max(surf[2,:])
+            ax = plt.subplot(1,1,1, projection='3d')
+            my_cmap = plt.get_cmap('hot')
+            ax.set_box_aspect(aspect = (1,2,1))
+            surfplot=ax.plot_trisurf(surf[0,:],surf[1,:],surf[2,:], cmap = my_cmap, edgecolor ='none')
+            plt.figure(7).colorbar(surfplot, shrink = 0.5, aspect = 5)
+            ax.tricontour(surf[0,:],surf[1,:],surf[2,:], zdir='z', offset = -1, cmap = my_cmap)
+            ax.set(zlim=(-1,zmax))
         plt.show()
-
 
 def on_clickRotDisp():
     #%% Parameters of the response spectra
@@ -1150,7 +1167,7 @@ style.map('TButton', foreground = [('active', '!disabled', 'red')],
                      background = [('active', 'black')])
 
 rr=0
-win.geometry("475x930")
+win.geometry("475x975")
 win.title("Read Earthquake Instrument ASC Files")
 
 win.menubar = Menu()
@@ -1187,13 +1204,13 @@ canvas.entry_Highxlim.insert(0,str(endlimAccel()))
 
 ttk.Separator(canvas, orient='horizontal').grid(row=rr, column=0, columnspan=2, pady =10, sticky="ew"); rr+=1
 canvas.SaveCh1 = IntVar(); canvas.SaveCh2 = IntVar(); canvas.SaveCh3 = IntVar(); canvas.createRS =IntVar(); canvas.createRS2 =IntVar();canvas.plotVel = IntVar();canvas.plotDisp = IntVar();canvas.plotOrbit = IntVar();canvas.plotFFT = IntVar()
-canvas.includeASCE = IntVar();canvas.createTrip=IntVar()
+canvas.includeASCE = IntVar();canvas.createTrip=IntVar(); canvas.createAz3D =IntVar()
 if EOF==1:
     ttk.Checkbutton(canvas, text="Plot Velocity?", variable=canvas.plotVel).grid(row=rr,column=0, sticky="w"); rr+=1
     ttk.Checkbutton(canvas, text="Plot Displacement?", variable=canvas.plotDisp).grid(row=rr,column=0, sticky="w"); rr+=1
     ttk.Checkbutton(canvas, text="Plot FFT?", variable=canvas.plotFFT).grid(row=rr,column=0, sticky="w"); rr+=1
 else:
-    canvas.label=Label(canvas, text="Parameters for Response Spectra", justify="left").grid(row=rr,column=0,sticky="e");rr+=1
+    canvas.label=Label(canvas, text="Parameters for Response Spectra", justify="left").grid(row=rr,column=0,sticky="w");rr+=1
     canvas.LabelDampin = Label(canvas, text="Damping Ratio = ", justify="right").grid(row=rr,column=0,sticky="e")
     canvas.entry_Damping  = Entry(canvas)
     canvas.entry_Damping.insert(0,str(0.05))
@@ -1243,20 +1260,22 @@ else:
     ttk.Checkbutton(canvas, text="3D Orbit Plot?", variable=canvas.plotOrbit).grid(row=rr,column=0, sticky="w"); rr+=1
     
     ttk.Separator(canvas, orient='horizontal').grid(row=rr, column=0, columnspan=2, pady =10, sticky="ew"); rr+=1
-
-canvas.Labelplot= Label(canvas, text= "Click the button to plot (Will take time to complete with any Spectra option enabled)").\
+    pb.grid(row=rr,column=0,pady=3,columnspan = 2); rr+=1
+    ttk.Separator(canvas, orient='horizontal').grid(row=rr, column=0, columnspan=2, pady =10, sticky="ew"); rr+=1
+    canvas.Labelplot= Label(canvas, text= "Click the button to plot (Will take time to complete with any Spectra option enabled)").\
     grid(row=rr,column=0,columnspan = 2,sticky="w"); rr+=1
 
-ttk.Button(canvas, text="Plot", command=on_click).grid(row=rr,column=0,padx=7,columnspan = 1)
-ttk.Button(canvas, text="Plot Rotated Max Resp", command=on_clickRotDisp).grid(row=rr,column=1,padx=7,columnspan = 1); rr+=1
-ttk.Button(canvas, text="Plot Rotated Max Velocity", command=on_clickRotVel).grid(row=rr,column=0,padx=7,columnspan = 1)
-ttk.Button(canvas, text="Plot Rotated Max Accel", command=on_clickRot).grid(row=rr,column=1,padx=7,columnspan = 1); rr+=1
-ttk.Separator(canvas, orient='horizontal').grid(row=rr, column=0, columnspan=2, pady =10, sticky="ew"); rr+=1
+    ttk.Button(canvas, text="Plot", command=on_click).grid(row=rr,column=0,padx=7,columnspan = 1)
+    ttk.Button(canvas, text="Plot Rotated Max Resp", command=on_clickRotDisp).grid(row=rr,column=1,padx=7,columnspan = 1); rr+=1
+    ttk.Button(canvas, text="Plot Rotated Max Velocity", command=on_clickRotVel).grid(row=rr,column=0,padx=7,columnspan = 1)
+    ttk.Button(canvas, text="Plot Rotated Max Accel", command=on_clickRot).grid(row=rr,column=1,padx=7,columnspan = 1); rr+=1
+    ttk.Separator(canvas, orient='horizontal').grid(row=rr, column=0, columnspan=2, pady =10, sticky="ew"); rr+=1
 
-pb.grid(row=rr,column=0,pady=3,columnspan = 2); rr+=1
-ttk.Button(canvas, text="Plot RotD50 Spectra", command=on_clickRotD50).grid(row=rr,column=0,pady=3,columnspan = 2); rr+=1
 
-ttk.Separator(canvas, orient='horizontal').grid(row=rr, column=0, columnspan=2, pady =10, sticky="ew"); rr+=1
+    ttk.Checkbutton(canvas, text="Plot Azimuth angle vs Spectra, 3D plot?", variable=canvas.createAz3D).grid(row=rr,column=0, sticky="w"); rr+=1
+    ttk.Button(canvas, text="Plot RotD50 Spectra", command=on_clickRotD50).grid(row=rr,column=0,pady=3,columnspan = 2); rr+=1
+
+    ttk.Separator(canvas, orient='horizontal').grid(row=rr, column=0, columnspan=2, pady =10, sticky="ew"); rr+=1
 canvas.Labelsave= Label(canvas, text= "Write data files (space separated time-acceleration values)").grid(row=rr,column=0); rr+=1
 if EOF==1:
 
