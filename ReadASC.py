@@ -452,8 +452,10 @@ def rotatedplots(plt, ax, T1, resAccelmax, noSubplotsRows,noSubplotsCols, subplo
     plt.subplots_adjust(left=0.1, right=0.95, top=0.95, bottom=0.05)    
     plt.show()
 
+
 def on_clickRot():
     #%% Parameters of the response spectra
+    
 
     horRec=np.zeros((2,len(scaledAccel1)))
 
@@ -798,7 +800,7 @@ def ASCE722Spectra():
     longt= str(canvas.entry_Long.get())
     riskct = str(canvas.SelectedRiskCategory.get())
     sitecl = str(canvas.SelectedSiteClass.get())
-    url = 'https://earthquake.usgs.gov/ws/designmaps/nehrp-2020.json?latitude='+ lat + '&longitude=' + longt\
+    url = 'https://earthquake.usgs.gov/ws/designmaps/asce7-22.json?latitude='+ lat + '&longitude=' + longt\
  +'&riskCategory='+ riskct +'&siteClass=' + sitecl + '&title=Example'
     #print(url)
     try:
