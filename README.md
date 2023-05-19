@@ -24,3 +24,5 @@ tkinter
 scipy
 
 Changes 5/3/2023 *Added option to plot Arias Intensity *Changed ASCE7-22 url per changes by USGS
+
+Changes 5/19/2023 *Added option to rotate to specified angle
